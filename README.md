@@ -20,6 +20,14 @@ manejando correctamente excepciones y transacciones para garantizar la consisten
   - **Usa transacciones** para asegurar que los cambios sean consistentes.
 
 ---
+## Prueba rápida del endpoint (con curl)
+
+Actualiza la cantidad de un producto en una orden:
+
+```bash
+curl --location --request PUT 'http://localhost:8085/api/ms-order/orders/5/products/2?newQuantity=31'
+----
+
 ## **Base de datos y datos de ejemplo**
 
 ### **Script para crear la base y tablas**
@@ -69,4 +77,3 @@ INSERT INTO order_item (order_id, product_id, quantity, line_total) VALUES
   (1, 3, 1, 120.99);
 
 ---
-
