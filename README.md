@@ -20,3 +20,53 @@ manejando correctamente excepciones y transacciones para garantizar la consisten
   - **Usa transacciones** para asegurar que los cambios sean consistentes.
 
 ---
+## **Base de datos y datos de ejemplo**
+
+### **Script para crear la base y tablas**
+
+```sql
+CREATE DATABASE ecommerce_order_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(12,2) NOT NULL,
+    available_quantity INT NOT NULL
+);
+
+CREATE TABLE orders (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) NOT NULL,
+    total DECIMAL(12,2) NOT NULL,
+    notes TEXT
+);
+
+CREATE TABLE order_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity INT NOT NULL,
+    line_total DECIMAL(12,2) NOT NULL,
+    UNIQUE(order_id, product_id),
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+
+INSERT INTO product (name, price, available_quantity) VALUES
+  ('Laptop Lenovo', 1500.00, 15),
+  ('Mouse Logitech', 45.50, 30),
+  ('Teclado Mecánico', 120.99, 25);
+
+INSERT INTO orders (customer_name, status, total, notes) VALUES
+  ('Juan Pérez', 'CREATED', 1711.99, 'Primer pedido de prueba');
+
+INSERT INTO order_item (order_id, product_id, quantity, line_total) VALUES
+  (1, 1, 1, 1500.00),
+  (1, 2, 2, 91.00),
+  (1, 3, 1, 120.99);
+
+---
+
